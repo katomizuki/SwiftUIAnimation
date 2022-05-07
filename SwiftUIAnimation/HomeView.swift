@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct HomeView: View {
+    // 現在見ているindex
     @State var currentIndex: Int = 0
+    // 投稿を入れる用の配列
     @State var posts: [Post] = []
     @State var currentTab = "Slide Show"
     @Namespace var animation
@@ -46,9 +48,11 @@ struct HomeView: View {
             }.background(Color.black.opacity(0.04),
                          in: RoundedRectangle(cornerRadius: 15))
                 .padding(.horizontal)
-             // Snap Coursole
+             // Snap Coursole 現在のindexを引数に入れてあげる
             SnapCarousel(index: $currentIndex,
                          items: posts) { post in
+                // GeometryReader applelogoを入れる。
+                // 画像を設定。　proxy.size
                 GeometryReader { proxy in
                     let size = proxy.size
                     Image(systemName: "applelogo")
@@ -60,7 +64,9 @@ struct HomeView: View {
             }.padding(.vertical, 40)
             
             HStack(spacing: 10) {
+                // Indicatorを表示する
                 ForEach(posts.indices, id: \.self) { index in
+                    // まるを作成　現在のindexをかどうかを判定して色を変える。また、大きさも変える。animationをspring（）にする
                     Circle()
                         .fill(Color.black.opacity(currentIndex == index ? 1 : 0.1))
                         .frame(width: 10, height: 10)
@@ -70,6 +76,7 @@ struct HomeView: View {
             }
         }.frame(maxHeight: .infinity, alignment: .top)
             .onAppear {
+                //初期化処理時にPostを入れる
                 for index in 1...5 {
                     posts.append(Post(postImage: "post\(index)"))
                 }
